@@ -1,0 +1,43 @@
+@page
+@model Mailroom.Pages.PackageModify.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewData["Meta"] = "Edit details for a package";
+}
+
+<h2>Edit package</h2>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CurrentPackage.PackageId"/>
+            <div class="form-group mb-3">
+                <label asp-for="Carrier" class="control-label"></label>
+                <input asp-for="Carrier" class="form-control"/>
+                <span asp-validation-for="Carrier" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="PickupDate" class="control-label"></label>
+                <input asp-for="PickupDate" class="form-control"/>
+                <span asp-validation-for="PickupDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check mb-3">
+                <label asp-for="Delivered" class="form-check-label"></label>
+                <input asp-for="Delivered" class="form-check-input" type="checkbox"></input>
+            </div>
+            <div class="form-group mb-2">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="../Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,56 @@
+@page
+@model Mailroom.Pages.User.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    ViewData["Meta"] = "Delete an existing user";
+}
+
+<h2>Delete user?</h2>
+<hr/>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.First_Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.First_Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Last_Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Last_Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Building)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Building)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Unit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Unit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Role)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="User.UserId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

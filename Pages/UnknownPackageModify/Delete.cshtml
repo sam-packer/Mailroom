@@ -1,0 +1,38 @@
+@page
+@model Mailroom.Pages.UnknownPackageModify.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+    ViewData["Meta"] = "Delete an unknown package";
+}
+
+<h2>Delete unknown package?</h2>
+<hr/>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UnknownPackage.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UnknownPackage.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UnknownPackage.Carrier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UnknownPackage.Carrier)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UnknownPackage.DeliveredDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UnknownPackage.DeliveredDate)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="UnknownPackage.UnknownPackageId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="../Index">Back to List</a>
+    </form>
+</div>

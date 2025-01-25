@@ -1,0 +1,153 @@
+@page
+@model Mailroom.Pages.User.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    ViewData["Meta"] = "See details for an existing user";
+}
+
+<h2>User details</h2>
+<hr/>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.First_Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.First_Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Last_Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Last_Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Building)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Building)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Unit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Unit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Role)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h3>Package history</h3>
+    <hr/>
+    @if (!Model.Packages.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            This resident has no package history.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Packages[0].Carrier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Packages[0].DeliveredDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Packages[0].PickedUpDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Packages[0].Delivered)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Packages)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Carrier)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveredDate)
+                    </td>
+                    <td>
+                        @(item.PickedUpDate == DateTime.MinValue ? "Not Picked Up" : item.PickedUpDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Delivered)
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        @if (Model.Packages.Any())
+        {
+            var previousDisabled = "";
+            var nextDisabled = "";
+            if (Model.PageNum <= 1)
+            {
+                previousDisabled = "disabled";
+            }
+
+            if (Model.PageNum >= Model.DetermineRecords() - 1)
+            {
+                nextDisabled = "disabled";
+            }
+
+            <div class="mt-3">
+                <nav aria-label="Package Navigation">
+                    <ul class="pagination">
+                        <li class="page-item @previousDisabled">
+                            <a class="page-link" asp-page="./Details" asp-route-id="@Model.User.UserId"
+                               asp-route-PageNum="@(Model.PageNum - 1)">Previous</a>
+                        </li>
+                        @for (var i = 1; i < Model.DetermineRecords(); i++)
+                        {
+                            @if (Model.PageNum == i)
+                            {
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" asp-page="./Details" asp-route-id="@Model.User.UserId"
+                                       asp-route-PageNum="@(i)">@i</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-page="./Details" asp-route-id="@Model.User.UserId"
+                                       asp-route-PageNum="@(i)">@i</a>
+                                </li>
+                            }
+                        }
+                        <li class="page-item">
+                            <a class="page-link @nextDisabled" asp-page="./Details" asp-route-id="@Model.User.UserId"
+                               asp-route-PageNum="@(Model.PageNum + 1)">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+
+        <div>
+            <a asp-page="./Edit" asp-route-id="@Model.User.UserId">Edit</a> |
+            <a asp-page="./Index">Back to List</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,97 @@
+﻿@using Mailroom.Jwt
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="@ViewData["Meta"]"/>
+    <title>@ViewData["Title"] - Mailroom</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <script src="~/js/site.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-body-tertiary border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Mailroom</a>
+            @{
+                string? token = JwtHelper.FetchToken(Context.Request);
+                string? role = null;
+                if (token != null)
+                {
+                    role = JwtHelper.GetRoleFromJwt(token);
+                }
+
+                if (token != null && role != null)
+                {
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            @{
+                                if (role == "Admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                                           data-bs-toggle="dropdown"
+                                           aria-expanded="false">
+                                            Packages
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" asp-page="/PackageDelivery">For Resident</a>
+                                            </li>
+                                            <li><a class="dropdown-item" asp-page="/UnknownPackageDelivery">Unknown
+                                                    Package</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                                           data-bs-toggle="dropdown"
+                                           aria-expanded="false">
+                                            Users
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" asp-page="/User/Index">List</a></li>
+                                            <li><a class="dropdown-item" asp-page="/User/Create">Create</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            }
+
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted mt-auto">
+    <div class="container">
+        &copy; 2024 Mailroom
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

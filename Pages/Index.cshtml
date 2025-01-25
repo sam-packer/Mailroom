@@ -1,0 +1,163 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["Meta"] = "Home page showing a list of packages not picked up";
+}
+
+@{
+    if (Model.UserRole == "Admin")
+    {
+        <h2>Hello, @Model.FullName</h2>
+        <p>Below are records of unknown packages and packages that have not been picked up.</p>
+
+        <h3>For pickup</h3>
+        <hr/>
+        @if (!Model.Packages.Any())
+        {
+            <div class="alert alert-success" role="alert">
+                There are no packages awaiting pickup!
+            </div>
+            <hr>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Packages[0].User.First_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Packages[0].User.Last_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Packages[0].Carrier)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Packages[0].DeliveredDate)
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Packages)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.First_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Last_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Carrier)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveredDate)
+                        </td>
+                        <td>
+                            <a asp-page="./PackageModify/Edit" asp-route-id="@item.PackageId">Edit</a> |
+                            <a asp-page="./PackageModify/Details" asp-route-id="@item.PackageId">Details</a> |
+                            <a asp-page="./PackageModify/Delete" asp-route-id="@item.PackageId">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+        <br>
+        <br/>
+
+        <h3>Unknown packages</h3>
+        <hr/>
+        @if (!Model.UnknownPackages.Any())
+        {
+            <div class="alert alert-success" role="alert">
+                There are no unknown packages!
+            </div>
+            <hr>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnknownPackages[0].FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnknownPackages[0].Carrier)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnknownPackages[0].DeliveredDate)
+                    </th>
+                    <th></th>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.UnknownPackages)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Carrier)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveredDate)
+                        </td>
+                        <td>
+                            <a asp-page="./UnknownPackageModify/Details"
+                               asp-route-id="@item.UnknownPackageId">Details</a> |
+                            <a asp-page="./UnknownPackageModify/Delete" asp-route-id="@item.UnknownPackageId">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        <h2>Hello, @Model.FullName</h2>
+        @if (!Model.Packages.Any())
+        {
+            <hr/>
+            <div class="alert alert-info" role="alert">
+                You have no packages awaiting pickup.
+            </div>
+        }
+        else
+        {
+            <p>Below are a list of packages available to you for pickup. Please go to the office to pick up your
+                packages.</p>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Packages[0].Carrier)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Packages[0].DeliveredDate)
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Packages)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Carrier)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveredDate)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    }
+}

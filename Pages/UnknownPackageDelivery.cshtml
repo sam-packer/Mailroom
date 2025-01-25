@@ -1,0 +1,29 @@
+﻿@page
+@model UnknownPackageDelivery
+@{
+    ViewData["Title"] = "New unknown package";
+    ViewData["Meta"] = "Add a new unknown package to the system";
+}
+
+<h2>New unknown package</h2>
+<hr/>
+
+<form method="post">
+    <div class="mb-3 col-sm-4">
+        <label asp-for="FullName" class="form-label">Full Name</label>
+        <input type="text" class="form-control form-control" asp-for="FullName" placeholder="John Doe">
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="mb-3 col-sm-4">
+        <label asp-for="Carrier" class="form-label">Carrier</label>
+        <input type="text" class="form-control form-control" asp-for="Carrier" placeholder="USPS, FedEx, etc.">
+        <span asp-validation-for="Carrier" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Ok</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

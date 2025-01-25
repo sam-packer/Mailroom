@@ -1,0 +1,48 @@
+@page
+@model Mailroom.Pages.PackageModify.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    ViewData["Meta"] = "View details for a package";
+}
+
+<h2>Package details</h2>
+<hr/>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Packages.Carrier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Packages.Carrier)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Packages.DeliveredDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Packages.DeliveredDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Packages.PickedUpDate)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Packages.PickedUpDate == DateTime.MinValue ? "Not Picked Up" : Model.Packages.PickedUpDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Packages.Delivered)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Packages.Delivered)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Packages.PackageId">Edit</a> |
+    <a asp-page="../Index">Back to List</a>
+</div>

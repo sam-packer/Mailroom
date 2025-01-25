@@ -1,0 +1,33 @@
+﻿@page
+@model PackageDelivery
+@{
+    ViewData["Title"] = "New package delivery";
+    ViewData["Meta"] = "Add a new package delivery to the system";
+}
+
+<h2>New package</h2>
+<hr/>
+
+<form method="post">
+    <div class="row">
+        <div class="mb-3 col-sm-4">
+            <label asp-for="FullName" class="form-label">Name</label>
+            <select asp-for="FullName" asp-items="Model.UserDropdown" class="form-control">
+                <option selected disabled>-- Select User --</option>
+            </select>
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="mb-3 col-sm-4">
+        <label asp-for="Carrier" class="form-label">Carrier</label>
+        <input type="text" class="form-control form-control" asp-for="Carrier" placeholder="USPS, FedEx, etc.">
+        <span asp-validation-for="Carrier" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Notify</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
