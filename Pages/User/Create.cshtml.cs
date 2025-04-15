@@ -22,8 +22,6 @@ namespace Mailroom.Pages.User
         }
 
         [BindProperty] public Mailroom.Models.User User { get; set; } = default!;
-        
-        public string ErrorMessage = "";
 
         private PasswordHasher<Models.User> _hasher = new();
 
@@ -32,12 +30,6 @@ namespace Mailroom.Pages.User
             if (!string.IsNullOrWhiteSpace(User.Email))
             {
                 User.Email = User.Email.ToLower();
-                
-                if (User.Email.EndsWith("@mailroom.com"))
-                {
-                    ErrorMessage = "You cannot create a new demo user.";
-                    return Page();
-                }
 
                 if (await _context.Users.AnyAsync(u => u.Email.ToLower() == User.Email))
                 {
