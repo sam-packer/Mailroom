@@ -15,7 +15,7 @@ public class UnknownPackageDelivery : PageModel
 
     [BindProperty]
     [Display(Name = "Carrier")]
-    [StringLength(50, MinimumLength = 1)]
+    [StringLength(25, MinimumLength = 1)]
     public string Carrier { get; set; }
 
     [BindProperty]
