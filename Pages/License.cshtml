@@ -1,0 +1,17 @@
+﻿@page
+@model Mailroom.Pages.License
+
+@{
+    ViewData["Title"] = "License";
+    ViewData["Meta"] = "The license page for the Mailroom application";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>This application is licensed under the GNU General Public License v3.0.</p>
+
+<pre style="white-space: pre-wrap; font-family: monospace;">
+@Model.LicenseText
+</pre>
+
+<p>For the full license text, visit <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GNU.org</a>.</p>

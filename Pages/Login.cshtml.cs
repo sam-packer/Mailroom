@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Mailroom.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +31,6 @@ public class LoginModel : PageModel
     public string Password { get; set; }
 
     public string ErrorMessage { get; set; } = default!;
-
-    private string Token { get; set; }
 
     public LoginModel(MailroomDbContext context, ILogger<LoginModel> logger, IConfiguration configuration)
     {
@@ -76,16 +75,18 @@ public class LoginModel : PageModel
             return Page();
         }
 
-        Token = JwtHelper.GenerateToken(user, _configuration);
-
-        var cookieOptions = new CookieOptions
+        var claims = new List<Claim>
         {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.Now.AddHours(3),
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(ClaimTypes.Name, user.First_Name + " " + user.Last_Name),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role)
         };
 
-        Response.Cookies.Append("AuthToken", Token, cookieOptions);
+        var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+        await HttpContext.SignInAsync("Cookies", claimsPrincipal);
 
         return RedirectToPage("/Index");
     }

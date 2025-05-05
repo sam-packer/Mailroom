@@ -8,17 +8,24 @@ public class User
 
     [Display(Name = "First Name")]
     [Required]
+    [StringLength(100, MinimumLength = 1)]
     public string? First_Name { get; set; }
 
+    [StringLength(100, MinimumLength = 1)]
     [Display(Name = "Last Name")]
     [Required]
     public string? Last_Name { get; set; }
 
-    [Required] [EmailAddress] public string? Email { get; set; }
+    [Required]
+    [EmailAddress]
+    [StringLength(255, MinimumLength = 1)]
+    public string? Email { get; set; }
 
     [StringLength(32, MinimumLength = 8)] public string? Password { get; set; }
 
-    public string? Building { get; set; }
+    [StringLength(100, MinimumLength = 1)] public string? Building { get; set; }
+
     public int? Unit { get; set; } = 0;
-    public string? Role { get; set; }
+
+    [StringLength(5, MinimumLength = 1)] public string? Role { get; set; }
 }

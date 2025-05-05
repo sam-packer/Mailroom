@@ -2,9 +2,9 @@ create table UnknownPackages
 (
     UnknownPackageId int auto_increment
         primary key,
-    FullName         text         null,
-    Carrier          varchar(25)  null,
-    DeliveredDate    varchar(255) null
+    FullName         text        null,
+    Carrier          varchar(25) null,
+    DeliveredDate    datetime    null
 );
 
 create table Users
@@ -26,11 +26,11 @@ create table Packages
 (
     PackageId     int auto_increment
         primary key,
-    UserId        int          null,
-    Carrier       varchar(50)  null,
-    DeliveredDate varchar(255) null,
-    PickedUpDate  varchar(255) null,
-    Delivered     tinyint(1)   null,
+    UserId        int         null,
+    Carrier       varchar(50) null,
+    DeliveredDate datetime    null,
+    PickedUpDate  datetime    null,
+    Delivered     tinyint(1)  null,
     constraint Packages_Users_UserId_fk
         foreign key (UserId) references Users (UserId)
             on delete cascade

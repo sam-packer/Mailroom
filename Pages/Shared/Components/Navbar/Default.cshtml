@@ -1,0 +1,44 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+            @if (Model == "Admin")
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Packages
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-page="/PackageDelivery">For Resident</a></li>
+                        <li><a class="dropdown-item" asp-page="/UnknownPackageDelivery">Unknown Package</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Users
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-page="/User/Index">List</a></li>
+                        <li><a class="dropdown-item" asp-page="/User/Create">Create</a></li>
+                    </ul>
+                </li>
+            }
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-page="/Logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+}

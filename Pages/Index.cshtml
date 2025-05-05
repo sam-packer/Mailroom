@@ -22,7 +22,7 @@
         }
         else
         {
-            <table class="table table-striped">
+            <table class="table table-striped table-hover align-middle">
                 <thead>
                 <tr>
                     <th>
@@ -56,10 +56,19 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.DeliveredDate)
                         </td>
-                        <td>
-                            <a asp-page="./PackageModify/Edit" asp-route-id="@item.PackageId">Edit</a> |
-                            <a asp-page="./PackageModify/Details" asp-route-id="@item.PackageId">Details</a> |
-                            <a asp-page="./PackageModify/Delete" asp-route-id="@item.PackageId">Delete</a>
+                        <td class="text-end pe-4">
+                            <a asp-page="./PackageModify/Edit" asp-route-id="@item.PackageId"
+                               class="btn btn-sm btn-outline-info me-1">
+                                Edit
+                            </a>
+                            <a asp-page="./PackageModify/Details" asp-route-id="@item.PackageId"
+                               class="btn btn-sm btn-outline-primary me-1">
+                                Details
+                            </a>
+                            <a asp-page="./PackageModify/Delete" asp-route-id="@item.PackageId"
+                               class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                 }
@@ -81,7 +90,7 @@
         }
         else
         {
-            <table class="table table-striped">
+            <table class="table table-striped table-hover align-middle">
                 <thead>
                 <tr>
                     <th>
@@ -108,10 +117,15 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.DeliveredDate)
                         </td>
-                        <td>
-                            <a asp-page="./UnknownPackageModify/Details"
-                               asp-route-id="@item.UnknownPackageId">Details</a> |
-                            <a asp-page="./UnknownPackageModify/Delete" asp-route-id="@item.UnknownPackageId">Delete</a>
+                        <td class="text-end pe-4">
+                            <a asp-page="./UnknownPackageModify/Details" asp-route-id="@item.UnknownPackageId"
+                               class="btn btn-sm btn-outline-primary me-1">
+                                Details
+                            </a>
+                            <a asp-page="./UnknownPackageModify/Delete" asp-route-id="@item.UnknownPackageId"
+                               class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                 }

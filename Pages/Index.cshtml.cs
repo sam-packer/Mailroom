@@ -1,4 +1,4 @@
-using Mailroom.Jwt;
+using System.Security.Claims;
 using Mailroom.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +16,9 @@ public class IndexModel : PageModel
     public IList<Packages> Packages { get; set; } = default!;
     public IList<UnknownPackage> UnknownPackages { get; set; } = default!;
 
-    public Models.User CurrentUser { get; private set; }
-
-    public string FullName { get; private set; }
-
-    public string UserRole { get; private set; }
-
-    private string Token { get; set; }
-
+    public Models.User CurrentUser { get; private set; } = default!;
+    public string FullName { get; private set; } = "";
+    public string UserRole { get; private set; } = "";
 
     public IndexModel(MailroomDbContext context, ILogger<IndexModel> logger)
     {
@@ -33,29 +28,39 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        Token = JwtHelper.FetchToken(HttpContext);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            _logger.LogWarning("Invalid or missing user ID claim.");
+            return Unauthorized();
+        }
 
-        var userClaim = JwtHelper.FetchUserClaim(Token);
-        CurrentUser = _context.Users.FirstOrDefault(u => u.UserId.ToString() == userClaim);
-
-        UserRole = JwtHelper.GetRoleFromJwt(Token);
-        FullName = JwtHelper.GetNameFromJwt(Token); // this one is just a test
-
+        CurrentUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         if (CurrentUser == null)
         {
+            _logger.LogWarning("User not found in DB for ID {UserId}", userId);
             return NotFound();
         }
 
+        UserRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "";
+        FullName = $"{CurrentUser.First_Name} {CurrentUser.Last_Name}";
+
         if (UserRole == "Admin")
         {
-            Packages = await _context.Packages.Include(p => p.User).Where(p => p.Delivered == false)
-                .OrderBy(p => p.DeliveredDate).ToListAsync();
+            Packages = await _context.Packages
+                .Include(p => p.User)
+                .Where(p => !p.Delivered)
+                .OrderBy(p => p.DeliveredDate)
+                .ToListAsync();
+
             UnknownPackages = await _context.UnknownPackages.ToListAsync();
         }
         else
         {
-            Packages = await _context.Packages.Include(p => p.User).Where(p => p.Delivered == false)
-                .Where(p => p.UserId == CurrentUser.UserId).ToListAsync();
+            Packages = await _context.Packages
+                .Include(p => p.User)
+                .Where(p => !p.Delivered && p.UserId == CurrentUser.UserId)
+                .ToListAsync();
         }
 
         return Page();

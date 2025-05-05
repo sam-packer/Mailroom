@@ -20,7 +20,7 @@
     },
     "production": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
+      "dotnetRunMessages": false,
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5221",
       "environmentVariables": {
