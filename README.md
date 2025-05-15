@@ -1,8 +1,23 @@
 ﻿# Mailroom Management System
 
-Built with .NET 9.0. Feature complete with user management, package management, MySQL, and JWT authentication.
+Built with .NET 9.0. Feature complete with user management, package management, MySQL, and authentication.
 
-### Setup Secrets
+## Live demo
+If you don't want to set up the project, you can view a live demo of this project at
+[https://mailroom.sampacker.com](https://mailroom.sampacker.com)
+
+### Admin Credentials
+**Username:** `admin@mailroom.com`
+
+**Password:** `admindemo`
+
+### User Credentials
+**Username:** `user@mailroom.com`
+
+**Password:** `userdemo`
+
+
+## Setup Secrets
 
 ```bash
 dotnet user-secrets init
@@ -17,7 +32,7 @@ dotnet user-secrets set "Mail:Username" "smtpuser"
 dotnet user-secrets set "Mail:Password" "smtppassword"
 ```
 
-### Database Schema
+## Database Schema
 
 This project uses EF Core migrations to set up the database. You can run the following commands to set up your own
 database with the schema. Please make sure that you run the commands above to set the user secrets. Otherwise, it won't
@@ -27,7 +42,7 @@ dotnet tool install --global dotnet-ef
 dotnet ef database update
 ```
 
-### Running the Application
+## Running the Application
 
 ```bash
 dotnet restore
