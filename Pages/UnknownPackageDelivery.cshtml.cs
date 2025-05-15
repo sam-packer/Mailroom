@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Mailroom.Models;
+﻿using Mailroom.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,15 +12,7 @@ public class UnknownPackageDelivery : PageModel
 
     private readonly MailroomDbContext _context;
 
-    [BindProperty]
-    [Display(Name = "Carrier")]
-    [StringLength(25, MinimumLength = 1)]
-    public string Carrier { get; set; }
-
-    [BindProperty]
-    [Display(Name = "Full Name")]
-    [StringLength(255, MinimumLength = 1)]
-    public string FullName { get; set; }
+    [BindProperty] public UnknownPackage UnknownPackage { get; set; }
 
     public UnknownPackageDelivery(MailroomDbContext context, ILogger<UnknownPackageDelivery> logger)
     {
@@ -35,14 +26,14 @@ public class UnknownPackageDelivery : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        UnknownPackage unknownPackage = new UnknownPackage
-        {
-            FullName = FullName,
-            Carrier = Carrier,
-            DeliveredDate = DateTime.Now
-        };
+        UnknownPackage.DeliveredDate = DateTime.UtcNow;
 
-        await _context.UnknownPackages.AddAsync(unknownPackage);
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        await _context.UnknownPackages.AddAsync(UnknownPackage);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("/Index");

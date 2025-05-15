@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Mailroom.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mailroom.Pages.User
+namespace Mailroom.Pages.ManageUsers
 {
     [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
@@ -21,9 +22,9 @@ namespace Mailroom.Pages.User
             return Page();
         }
 
-        [BindProperty] public Mailroom.Models.User User { get; set; } = default!;
+        [BindProperty] public User User { get; set; } = default!;
 
-        private PasswordHasher<Models.User> _hasher = new();
+        private PasswordHasher<User> _hasher = new();
 
         public async Task<IActionResult> OnPostAsync()
         {

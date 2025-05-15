@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Mailroom.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,14 +12,16 @@ namespace Mailroom.Pages.PackageModify
     public class DetailsModel : PageModel
     {
         private readonly MailroomDbContext _context;
+        private readonly ILogger<DetailsModel> _logger;
 
-        public DetailsModel(MailroomDbContext context)
+        public DetailsModel(MailroomDbContext context, ILogger<DetailsModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public Packages Packages { get; set; } = default!;
-
+        
         [Display(Name = "Resident")] public string FullName { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -33,11 +36,9 @@ namespace Mailroom.Pages.PackageModify
             {
                 return NotFound();
             }
-            else
-            {
-                Packages = packages;
-                FullName = packages.User.First_Name + " " + packages.User.Last_Name;
-            }
+
+            Packages = packages;
+            FullName = packages.User.First_Name + " " + packages.User.Last_Name;
 
             return Page();
         }

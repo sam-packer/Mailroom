@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mailroom.Models;
+using Mailroom.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -14,11 +16,13 @@ namespace Mailroom.Pages.PackageModify
     {
         private readonly MailroomDbContext _context;
         private readonly ILogger<EditModel> _logger;
+        private readonly ICurrentUserService _currentUser;
 
-        public EditModel(MailroomDbContext context, ILogger<EditModel> logger)
+        public EditModel(MailroomDbContext context, ILogger<EditModel> logger, ICurrentUserService currentUser)
         {
             _context = context;
             _logger = logger;
+            _currentUser = currentUser;
         }
 
         [BindProperty] public Packages CurrentPackage { get; set; } = default!;
@@ -36,7 +40,7 @@ namespace Mailroom.Pages.PackageModify
         [BindProperty]
         [Display(Name = "Picked up by user?")]
         public bool Delivered { get; set; } = default!;
-
+        
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -52,7 +56,7 @@ namespace Mailroom.Pages.PackageModify
 
             CurrentPackage = package;
             Carrier = CurrentPackage.Carrier;
-            PickupDate = DateTime.Now;
+            PickupDate = TimeZoneUtil.FromUtc(DateTime.UtcNow, _currentUser.Timezone);
             Delivered = package.Delivered;
 
             return Page();
@@ -63,7 +67,7 @@ namespace Mailroom.Pages.PackageModify
             var package = _context.Attach(CurrentPackage);
 
             package.Entity.Carrier = Carrier;
-            package.Entity.PickedUpDate = PickupDate;
+            package.Entity.PickedUpDate = TimeZoneUtil.ToUtc(PickupDate, _currentUser.Timezone);
             package.Entity.Delivered = Delivered;
 
             try
@@ -76,10 +80,8 @@ namespace Mailroom.Pages.PackageModify
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return RedirectToPage("../Index");

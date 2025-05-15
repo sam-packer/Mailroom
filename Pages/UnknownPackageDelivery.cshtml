@@ -9,15 +9,16 @@
 <hr/>
 
 <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="mb-3 col-sm-4">
-        <label asp-for="FullName" class="form-label">Full Name</label>
-        <input type="text" class="form-control form-control" asp-for="FullName" placeholder="John Doe">
-        <span asp-validation-for="FullName" class="text-danger"></span>
+        <label asp-for="UnknownPackage.FullName" class="form-label">Full Name</label>
+        <input type="text" class="form-control form-control" asp-for="UnknownPackage.FullName" placeholder="John Doe">
+        <span asp-validation-for="UnknownPackage.FullName" class="text-danger"></span>
     </div>
     <div class="mb-3 col-sm-4">
-        <label asp-for="Carrier" class="form-label">Carrier</label>
-        <input type="text" class="form-control form-control" asp-for="Carrier" placeholder="USPS, FedEx, etc.">
-        <span asp-validation-for="Carrier" class="text-danger"></span>
+        <label asp-for="UnknownPackage.Carrier" class="form-label">Carrier</label>
+        <input type="text" class="form-control form-control" asp-for="UnknownPackage.Carrier" placeholder="USPS, FedEx, etc.">
+        <span asp-validation-for="UnknownPackage.Carrier" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <button type="submit" class="btn btn-primary">Ok</button>

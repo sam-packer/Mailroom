@@ -12,9 +12,6 @@ public class EmailUtil
 
     public EmailUtil(IConfiguration configuration)
     {
-        configuration = new ConfigurationBuilder()
-            .AddUserSecrets<Program>()
-            .Build();
         _configuration = configuration;
     }
 

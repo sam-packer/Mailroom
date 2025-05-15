@@ -1,5 +1,7 @@
 @page
+@using Mailroom.Utils
 @model Mailroom.Pages.PackageModify.DeleteModel
+@inject ICurrentUserService CurrentUserService
 
 @{
     ViewData["Title"] = "Delete";
@@ -26,13 +28,15 @@
             @Html.DisplayNameFor(model => model.Packages.DeliveredDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Packages.DeliveredDate)
+            @TimeZoneUtil.ConvertToUserTime(Model.Packages.DeliveredDate, CurrentUserService.Timezone).ToString("g")
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Packages.PickedUpDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Packages.PickedUpDate)
+            @(Model.Packages.PickedUpDate == DateTime.MinValue
+                ? "Not Picked Up"
+                : TimeZoneUtil.ConvertToUserTime(Model.Packages.PickedUpDate, CurrentUserService.Timezone).ToString("g"))
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Packages.Delivered)
@@ -41,10 +45,10 @@
             @Html.DisplayFor(model => model.Packages.Delivered)
         </dd>
     </dl>
-    
+
     <form method="post">
-        <input type="hidden" asp-for="Packages.PackageId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="hidden" asp-for="Packages.PackageId"/>
+        <input type="submit" value="Delete" class="btn btn-danger"/> |
         <a asp-page="../Index">Back to List</a>
     </form>
 </div>

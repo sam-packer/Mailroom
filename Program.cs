@@ -1,3 +1,6 @@
+using Mailroom;
+using Mailroom.Pages.Mail;
+using Mailroom.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +10,10 @@ builder.Configuration.AddUserSecrets<Program>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<MailroomDbContext>(options => options.UseMySql(
-    builder.Configuration.GetConnectionString("MailroomDB"),
-    new MariaDbServerVersion(new Version(11, 4, 4))));
+builder.Services.AddDbContext<MailroomDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("MailroomDB"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MailroomDB"))));
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
@@ -24,6 +28,13 @@ builder.Services.AddAuthentication("Cookies")
             return Task.CompletedTask;
         };
     });
+
+builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+builder.Services.AddHostedService<QueuedHostedService>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();
 
@@ -50,6 +61,7 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
+app.MapControllers();
 app.MapRazorPages();
 
 app.Run();

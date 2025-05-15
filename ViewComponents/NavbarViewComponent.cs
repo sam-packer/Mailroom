@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using System.Security.Claims;
-
-namespace Mailroom.ViewComponents;
+﻿using Mailroom;
+using Mailroom.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 public class NavbarViewComponent : ViewComponent
 {
+    private readonly ICurrentUserService _currentUser;
+
+    public NavbarViewComponent(ICurrentUserService currentUser)
+    {
+        _currentUser = currentUser;
+    }
+
     public IViewComponentResult Invoke()
     {
-        var user = HttpContext.User;
-        if (user?.Identity?.IsAuthenticated != true)
+        if (_currentUser.UserId == null || _currentUser.User == null)
         {
-            return View<string>("Default", null); // Show no nav or limited nav
+            return View<string>("Default", null); // Not logged in
         }
 
-        var role = user.FindFirst(ClaimTypes.Role)?.Value;
+        var role = _currentUser.Role;
         return View("Default", role);
     }
 }

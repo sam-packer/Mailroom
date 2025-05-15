@@ -1,5 +1,7 @@
 @page
-@model Mailroom.Pages.User.DetailsModel
+@using Mailroom.Utils
+@model DetailsModel
+@inject ICurrentUserService CurrentUserService
 
 @{
     ViewData["Title"] = "Details";
@@ -86,11 +88,12 @@
                         @Html.DisplayFor(modelItem => item.Carrier)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DeliveredDate)
+                        @TimeZoneUtil.ConvertToUserTime(item.DeliveredDate, CurrentUserService.Timezone).ToString("g")
                     </td>
                     <td>
-                        @(item.PickedUpDate == DateTime.MinValue ? "Not Picked Up" : item.PickedUpDate)
-                    </td>
+                        @(item.PickedUpDate == DateTime.MinValue
+                            ? "Not Picked Up"
+                            : TimeZoneUtil.ConvertToUserTime(item.PickedUpDate, CurrentUserService.Timezone).ToString("g"))                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Delivered)
                     </td>

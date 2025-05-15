@@ -29,6 +29,9 @@ public class LoginModel : PageModel
     [StringLength(32, MinimumLength = 8)]
     [BindProperty]
     public string Password { get; set; }
+    
+    [BindProperty(SupportsGet = false)]
+    public string Timezone { get; set; } = "UTC";
 
     public string ErrorMessage { get; set; } = default!;
 
@@ -74,13 +77,19 @@ public class LoginModel : PageModel
             ErrorMessage = "Invalid email or password";
             return Page();
         }
+        
+        if (!string.IsNullOrEmpty(Timezone) && user.Timezone != Timezone)
+        {
+            user.Timezone = Timezone;
+            await _context.SaveChangesAsync();
+        }
 
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new Claim(ClaimTypes.Name, user.First_Name + " " + user.Last_Name),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Role, user.Role),
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, "Cookies");

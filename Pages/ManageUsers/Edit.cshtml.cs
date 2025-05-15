@@ -1,24 +1,29 @@
+using System.Security.Claims;
+using Mailroom.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 
-namespace Mailroom.Pages.User
+namespace Mailroom.Pages.ManageUsers
 {
     [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly MailroomDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public EditModel(MailroomDbContext context)
+        public EditModel(MailroomDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
-        [BindProperty] public Models.User EditUser { get; set; } = default!;
+        [BindProperty] public User EditUser { get; set; } = default!;
 
-        private PasswordHasher<Models.User> _hasher = new();
+        private PasswordHasher<User> _hasher = new();
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -52,8 +57,12 @@ namespace Mailroom.Pages.User
 
             if (EditUser.Role == "User")
             {
+                var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                bool isSelf = EditUser.UserId == currentUserId;
                 var adminCount = await _context.Users.CountAsync(u => u.Role == "Admin");
-                if (adminCount <= 1)
+                
+                if (isSelf && adminCount <= 1)
                 {
                     ModelState.AddModelError("EditUser.Role",
                         "You are the only admin in the database and cannot set your role to User.");
@@ -80,6 +89,7 @@ namespace Mailroom.Pages.User
             try
             {
                 await _context.SaveChangesAsync();
+                _cache.Remove($"user_{EditUser.UserId}");
             }
             catch (DbUpdateConcurrencyException)
             {

@@ -1,21 +1,25 @@
+using Mailroom.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Memory;
 
-namespace Mailroom.Pages.User
+namespace Mailroom.Pages.ManageUsers
 {
     [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
         private readonly MailroomDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public DeleteModel(MailroomDbContext context)
+        public DeleteModel(MailroomDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
-        [BindProperty] public Mailroom.Models.User User { get; set; } = default!;
+        [BindProperty] public User User { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,10 +34,8 @@ namespace Mailroom.Pages.User
             {
                 return NotFound();
             }
-            else
-            {
-                User = user;
-            }
+
+            User = user;
 
             return Page();
         }
@@ -46,12 +48,25 @@ namespace Mailroom.Pages.User
             }
 
             var user = await _context.Users.FindAsync(id);
-            if (user != null)
+
+            if (user == null)
             {
-                User = user;
-                _context.Users.Remove(User);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            User = user;
+
+            var adminCount = await _context.Users.CountAsync(u => u.Role == "Admin");
+
+            if (adminCount <= 1)
+            {
+                TempData["ErrorMessage"] = "You are the last admin in the database and cannot delete yourself!";
+                return Page();
+            }
+
+            _cache.Remove($"user_{user.UserId}");
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

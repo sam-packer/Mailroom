@@ -1,5 +1,5 @@
-using System.Security.Claims;
 using Mailroom.Models;
+using Mailroom.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,55 +12,49 @@ public class IndexModel : PageModel
 {
     private readonly MailroomDbContext _context;
     private readonly ILogger<IndexModel> _logger;
+    private readonly ICurrentUserService _currentUser;
 
-    public IList<Packages> Packages { get; set; } = default!;
-    public IList<UnknownPackage> UnknownPackages { get; set; } = default!;
+    private const int PageSize = 10;
 
-    public Models.User CurrentUser { get; private set; } = default!;
-    public string FullName { get; private set; } = "";
-    public string UserRole { get; private set; } = "";
+    public PaginatedList<Packages> Packages { get; set; }
+    public PaginatedList<UnknownPackage> UnknownPackages { get; set; }
 
-    public IndexModel(MailroomDbContext context, ILogger<IndexModel> logger)
+    public IndexModel(MailroomDbContext context, ILogger<IndexModel> logger, ICurrentUserService currentUser)
     {
         _context = context;
         _logger = logger;
+        _currentUser = currentUser;
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(
+        int packagesPage = 1,
+        int unknownPage = 1)
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!int.TryParse(userIdClaim, out var userId))
+        if (_currentUser.Role == "Admin")
         {
-            _logger.LogWarning("Invalid or missing user ID claim.");
-            return Unauthorized();
-        }
-
-        CurrentUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-        if (CurrentUser == null)
-        {
-            _logger.LogWarning("User not found in DB for ID {UserId}", userId);
-            return NotFound();
-        }
-
-        UserRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "";
-        FullName = $"{CurrentUser.First_Name} {CurrentUser.Last_Name}";
-
-        if (UserRole == "Admin")
-        {
-            Packages = await _context.Packages
+            var packagesQuery = _context.Packages
                 .Include(p => p.User)
                 .Where(p => !p.Delivered)
-                .OrderBy(p => p.DeliveredDate)
-                .ToListAsync();
+                .OrderBy(p => p.DeliveredDate);
 
-            UnknownPackages = await _context.UnknownPackages.ToListAsync();
+            Packages = await PaginatedList<Packages>
+                .CreateAsync(packagesQuery, packagesPage, PageSize);
+
+            var unknownQuery = _context.UnknownPackages
+                .OrderBy(u => u.DeliveredDate);
+
+            UnknownPackages = await PaginatedList<UnknownPackage>
+                .CreateAsync(unknownQuery, unknownPage, PageSize);
         }
         else
         {
-            Packages = await _context.Packages
+            var userPackages = _context.Packages
                 .Include(p => p.User)
-                .Where(p => !p.Delivered && p.UserId == CurrentUser.UserId)
-                .ToListAsync();
+                .Where(p => !p.Delivered && p.UserId == _currentUser.UserId)
+                .OrderBy(p => p.DeliveredDate);
+
+            Packages = await PaginatedList<Packages>
+                .CreateAsync(userPackages, packagesPage, PageSize);
         }
 
         return Page();

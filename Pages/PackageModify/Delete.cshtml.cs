@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Mailroom.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,10 +11,12 @@ namespace Mailroom.Pages.PackageModify
     public class DeleteModel : PageModel
     {
         private readonly MailroomDbContext _context;
+        private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(MailroomDbContext context)
+        public DeleteModel(MailroomDbContext context, ILogger<DeleteModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [BindProperty] public Packages Packages { get; set; } = default!;

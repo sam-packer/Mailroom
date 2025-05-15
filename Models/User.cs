@@ -28,4 +28,9 @@ public class User
     public int? Unit { get; set; } = 0;
 
     [StringLength(5, MinimumLength = 1)] public string? Role { get; set; }
+    
+    [StringLength(255)]
+    public string Timezone { get; set; } = string.Empty;
+    
+    public ICollection<Packages>? Packages { get; set; }
 }

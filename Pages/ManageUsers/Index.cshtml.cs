@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using Mailroom.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Mailroom.Pages.User
+namespace Mailroom.Pages.ManageUsers
 {
     [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
@@ -17,7 +18,7 @@ namespace Mailroom.Pages.User
             _context = context;
         }
 
-        public IList<Models.User> User { get; set; } = default!;
+        public IList<User> User { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

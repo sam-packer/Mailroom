@@ -7,9 +7,12 @@ public class Packages
     public int PackageId { get; set; }
     public int UserId { get; set; }
     public User? User { get; set; }
-    public string Carrier { get; set; }
 
-    [Display(Name = "Delivery Date")] public DateTime DeliveredDate { get; set; }
+    [StringLength(50, MinimumLength = 1)] public string Carrier { get; set; } = string.Empty;
+
+    [Display(Name = "Delivery Date")]
+    [Required]
+    public DateTime DeliveredDate { get; set; }
 
     [Display(Name = "Pickup Date")] public DateTime PickedUpDate { get; set; }
 

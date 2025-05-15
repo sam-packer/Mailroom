@@ -41,8 +41,6 @@ public class Initialize : PageModel
     [BindProperty]
     public string Password { get; set; }
 
-    private string Token { get; set; }
-
     public Initialize(MailroomDbContext context, ILogger<Initialize> logger, IConfiguration configuration)
     {
         _context = context;
@@ -91,7 +89,7 @@ public class Initialize : PageModel
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
         await HttpContext.SignInAsync("Cookies", claimsPrincipal);
-        
+
         return RedirectToPage("/Index");
     }
 }

@@ -1,10 +1,10 @@
+using Mailroom.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mailroom.Models;
-using Microsoft.AspNetCore.Authorization;
 
-namespace Mailroom.Pages.User
+namespace Mailroom.Pages.ManageUsers
 {
     [Authorize(Roles = "Admin")]
     public class DetailsModel : PageModel
@@ -16,7 +16,7 @@ namespace Mailroom.Pages.User
             _context = context;
         }
 
-        public Models.User User { get; set; } = default!;
+        public User User { get; set; } = default!;
 
         public IList<Packages> Packages { get; set; } = default!;
 

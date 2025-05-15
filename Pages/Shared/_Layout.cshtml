@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/refreshToken.js" asp-append-version="true"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
 <header>
@@ -34,6 +33,27 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    (function () {
+        const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const storedTz = localStorage.getItem("user_timezone");
+
+        if (currentTz && currentTz !== storedTz) {
+            fetch("/api/timezone", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({timezone: currentTz})
+            }).then(res => {
+                if (res.ok) {
+                    localStorage.setItem("user_timezone", currentTz);
+                }
+            }).catch(err => {
+                console.warn("Timezone update failed", err);
+            });
+        }
+    })();
+</script>
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>

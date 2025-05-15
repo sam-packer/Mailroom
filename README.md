@@ -19,8 +19,13 @@ dotnet user-secrets set "Mail:Password" "smtppassword"
 
 ### Database Schema
 
-Please look at the [schema.sql](schema.sql) file for the database schema. You can create a new database, switch to it,
-and import the schema in.
+This project uses EF Core migrations to set up the database. You can run the following commands to set up your own
+database with the schema. Please make sure that you run the commands above to set the user secrets. Otherwise, it won't
+be able to establish a connection to your database.
+```bash
+dotnet tool install --global dotnet-ef
+dotnet ef database update
+```
 
 ### Running the Application
 

@@ -1,5 +1,5 @@
 @page
-@model Mailroom.Pages.User.DeleteModel
+@model DeleteModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -47,6 +47,11 @@
             @Html.DisplayFor(model => model.User.Role)
         </dd>
     </dl>
+    
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["ErrorMessage"]</div>
+    }
     
     <form method="post">
         <input type="hidden" asp-for="User.UserId" />
