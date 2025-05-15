@@ -21,7 +21,7 @@ namespace Mailroom.Pages.PackageModify
         }
 
         public Packages Packages { get; set; } = default!;
-        
+
         [Display(Name = "Resident")] public string FullName { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)

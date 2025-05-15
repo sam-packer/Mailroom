@@ -36,11 +36,10 @@ namespace Mailroom.Pages.PackageModify
         [Display(Name = "Pickup Date")]
         public DateTime PickupDate { get; set; } = default!;
 
-
         [BindProperty]
         [Display(Name = "Picked up by user?")]
         public bool Delivered { get; set; } = default!;
-        
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)

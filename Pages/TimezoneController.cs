@@ -27,11 +27,10 @@ public class TimezoneController : ControllerBase
         var user = await _context.Users.FindAsync(userId);
         if (user == null) return NotFound();
 
-        if (user.Timezone != dto.Timezone)
-        {
-            user.Timezone = dto.Timezone;
-            await _context.SaveChangesAsync();
-        }
+        if (user.Timezone == dto.Timezone) return Ok();
+        
+        user.Timezone = dto.Timezone;
+        await _context.SaveChangesAsync();
 
         return Ok();
     }
