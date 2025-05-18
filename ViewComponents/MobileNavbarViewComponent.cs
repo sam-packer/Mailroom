@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mailroom.ViewComponents;
 
-public class NavbarViewComponent : ViewComponent
+public class MobileNavbarViewComponent : ViewComponent
 {
     private readonly ICurrentUserService _currentUser;
 
-    public NavbarViewComponent(ICurrentUserService currentUser)
+    public MobileNavbarViewComponent(ICurrentUserService currentUser)
     {
         _currentUser = currentUser;
     }

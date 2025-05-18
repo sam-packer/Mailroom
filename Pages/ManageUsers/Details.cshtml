@@ -8,149 +8,106 @@
     ViewData["Meta"] = "See details for an existing user";
 }
 
-<h2>User details</h2>
-<hr/>
+<h2 class="text-2xl font-semibold">User Details</h2>
+<div class="divider"></div>
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.First_Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.First_Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Last_Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Last_Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Building)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Building)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Unit)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Unit)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User.Role)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Role)
-        </dd>
-    </dl>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 mb-8">
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.User.First_Name):</span>
+        <div>@Html.DisplayFor(m => m.User.First_Name)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.User.Last_Name):</span>
+        <div>@Html.DisplayFor(m => m.User.Last_Name)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.User.Email):</span>
+        <div>@Html.DisplayFor(m => m.User.Email)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.User.Building):</span>
+        <div>@Html.DisplayFor(m => m.User.Building)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.User.Unit):</span>
+        <div>@Html.DisplayFor(m => m.User.Unit)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.User.Role):</span>
+        <div>@Html.DisplayFor(m => m.User.Role)</div>
+    </div>
 </div>
-<div>
-    <h3>Package history</h3>
-    <hr/>
-    @if (!Model.Packages.Any())
-    {
-        <div class="alert alert-info" role="alert">
-            This resident has no package history.
-        </div>
-    }
-    else
-    {
-        <table class="table table-striped">
+
+<h3 class="text-xl font-semibold">Package History</h3>
+<div class="divider"></div>
+
+@if (!Model.Packages.Any())
+{
+    <div class="alert alert-info">
+        <span>This resident has no package history.</span>
+    </div>
+}
+else
+{
+    <div class="overflow-x-auto rounded-box border border-base-content/5">
+        <table class="table table-zebra w-full">
             <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Packages[0].Carrier)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Packages[0].DeliveredDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Packages[0].PickedUpDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Packages[0].Delivered)
-                </th>
-                <th></th>
+                <th>@Html.DisplayNameFor(m => m.Packages[0].Carrier)</th>
+                <th>@Html.DisplayNameFor(m => m.Packages[0].DeliveredDate)</th>
+                <th>@Html.DisplayNameFor(m => m.Packages[0].PickedUpDate)</th>
+                <th>@Html.DisplayNameFor(m => m.Packages[0].Delivered)</th>
             </tr>
             </thead>
             <tbody>
             @foreach (var item in Model.Packages)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Carrier)
-                    </td>
-                    <td>
-                        @TimeZoneUtil.ConvertToUserTime(item.DeliveredDate, CurrentUserService.Timezone).ToString("g")
-                    </td>
+                <tr class="hover:bg-base-300">
+                    <td>@Html.DisplayFor(m => item.Carrier)</td>
+                    <td>@TimeZoneUtil.ConvertToUserTime(item.DeliveredDate, CurrentUserService.Timezone).ToString("g")</td>
                     <td>
                         @(item.PickedUpDate == DateTime.MinValue
                             ? "Not Picked Up"
-                            : TimeZoneUtil.ConvertToUserTime(item.PickedUpDate, CurrentUserService.Timezone).ToString("g"))                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Delivered)
+                            : TimeZoneUtil.ConvertToUserTime(item.PickedUpDate, CurrentUserService.Timezone).ToString("g"))
                     </td>
+                    <td>@Html.DisplayFor(m => item.Delivered)</td>
                 </tr>
             }
             </tbody>
         </table>
-        @if (Model.Packages.Any())
+    </div>
+
+    <!-- Pagination -->
+    var prevDisabled = Model.PageNum <= 1;
+    var nextDisabled = Model.PageNum >= Model.DetermineRecords() - 1;
+
+    <div class="join mt-4">
+        <a class="join-item btn @(prevDisabled ? "btn-disabled" : "")"
+           asp-page="./Details"
+           asp-route-id="@Model.User.UserId"
+           asp-route-PageNum="@(Model.PageNum - 1)">
+            Previous
+        </a>
+        @for (var i = 1; i < Model.DetermineRecords(); i++)
         {
-            var previousDisabled = "";
-            var nextDisabled = "";
-            if (Model.PageNum <= 1)
-            {
-                previousDisabled = "disabled";
-            }
-
-            if (Model.PageNum >= Model.DetermineRecords() - 1)
-            {
-                nextDisabled = "disabled";
-            }
-
-            <div class="mt-3">
-                <nav aria-label="Package Navigation">
-                    <ul class="pagination">
-                        <li class="page-item @previousDisabled">
-                            <a class="page-link" asp-page="./Details" asp-route-id="@Model.User.UserId"
-                               asp-route-PageNum="@(Model.PageNum - 1)">Previous</a>
-                        </li>
-                        @for (var i = 1; i < Model.DetermineRecords(); i++)
-                        {
-                            @if (Model.PageNum == i)
-                            {
-                                <li class="page-item active" aria-current="page">
-                                    <a class="page-link" asp-page="./Details" asp-route-id="@Model.User.UserId"
-                                       asp-route-PageNum="@(i)">@i</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-page="./Details" asp-route-id="@Model.User.UserId"
-                                       asp-route-PageNum="@(i)">@i</a>
-                                </li>
-                            }
-                        }
-                        <li class="page-item">
-                            <a class="page-link @nextDisabled" asp-page="./Details" asp-route-id="@Model.User.UserId"
-                               asp-route-PageNum="@(Model.PageNum + 1)">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <a class="join-item btn @(Model.PageNum == i ? "btn-active" : "")"
+               asp-page="./Details"
+               asp-route-id="@Model.User.UserId"
+               asp-route-PageNum="@i">
+                @i
+            </a>
         }
 
-        <div>
-            <a asp-page="./Edit" asp-route-id="@Model.User.UserId">Edit</a> |
-            <a asp-page="./Index">Back to List</a>
-        </div>
-    }
-</div>
+        <a class="join-item btn @(nextDisabled ? "btn-disabled" : "")"
+           asp-page="./Details"
+           asp-route-id="@Model.User.UserId"
+           asp-route-PageNum="@(Model.PageNum + 1)">
+            Next
+        </a>
+    </div>
+
+    <div class="mt-6 space-x-4">
+        <a asp-page="./Edit" asp-route-id="@Model.User.UserId" class="link link-primary">Edit</a>
+        <a asp-page="./Index" class="link link-secondary">Back to List</a>
+    </div>
+}

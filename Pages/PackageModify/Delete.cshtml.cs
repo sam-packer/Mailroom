@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Mailroom.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,8 @@ namespace Mailroom.Pages.PackageModify
 
         [BindProperty] public Packages Packages { get; set; } = default!;
 
+        [Display(Name = "Resident")] public string FullName { get; set; } = default!;
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -28,16 +31,15 @@ namespace Mailroom.Pages.PackageModify
                 return NotFound();
             }
 
-            var packages = await _context.Packages.FirstOrDefaultAsync(m => m.PackageId == id);
+            var packages = await _context.Packages.Include(u => u.User).FirstOrDefaultAsync(m => m.PackageId == id);
 
             if (packages == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Packages = packages;
-            }
+
+            Packages = packages;
+            FullName = packages.User.First_Name + " " + packages.User.Last_Name;
 
             return Page();
         }

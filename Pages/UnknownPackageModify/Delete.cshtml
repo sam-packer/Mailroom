@@ -8,33 +8,28 @@
     ViewData["Meta"] = "Delete an unknown package";
 }
 
-<h2>Delete unknown package?</h2>
-<hr/>
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UnknownPackage.FullName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UnknownPackage.FullName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UnknownPackage.Carrier)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UnknownPackage.Carrier)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UnknownPackage.DeliveredDate)
-        </dt>
-        <dd class="col-sm-10">
+<h2 class="text-2xl font-semibold text-error">Delete Unknown Package?</h2>
+<div class="divider"></div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 mb-6">
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.UnknownPackage.FullName):</span>
+        <div>@Html.DisplayFor(m => m.UnknownPackage.FullName)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.UnknownPackage.Carrier):</span>
+        <div>@Html.DisplayFor(m => m.UnknownPackage.Carrier)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.UnknownPackage.DeliveredDate):</span>
+        <div>
             @TimeZoneUtil.ConvertToUserTime(Model.UnknownPackage.DeliveredDate, CurrentUserService.Timezone).ToString("g")
-        </dd>
-    </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="UnknownPackage.UnknownPackageId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="../Index">Back to List</a>
-    </form>
+        </div>
+    </div>
 </div>
+
+<form method="post" class="flex items-center gap-4">
+    <input type="hidden" asp-for="UnknownPackage.UnknownPackageId" />
+    <button type="submit" class="btn btn-error">Delete</button>
+    <a asp-page="../Index" class="link link-secondary">Back to List</a>
+</form>

@@ -5,27 +5,33 @@
     ViewData["Meta"] = "Add a new package delivery to the system";
 }
 
-<h2>New package</h2>
-<hr/>
+<h2 class="text-2xl font-semibold">New package</h2>
+<div class="divider"></div>
 
-<form method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="row">
-        <div class="mb-3 col-sm-4">
-            <label asp-for="FullName" class="form-label">Name</label>
-            <select asp-for="FullName" asp-items="Model.UserDropdown" class="form-control">
-                <option selected disabled>-- Select User --</option>
-            </select>
-            <span asp-validation-for="FullName" class="text-danger"></span>
-        </div>
+<form method="post" class="max-w-xl space-y-6">
+    <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+
+    <div class="form-control w-full">
+        <label asp-for="FullName" class="label">
+            <span class="label-text">Name</span>
+        </label>
+        <select asp-for="FullName" asp-items="Model.UserDropdown" class="select select-bordered w-full">
+            <option selected disabled>-- Select User --</option>
+        </select>
+        <span asp-validation-for="FullName" class="text-error text-sm"></span>
     </div>
-    <div class="mb-3 col-sm-4">
-        <label asp-for="Package.Carrier" class="form-label">Carrier</label>
-        <input type="text" class="form-control form-control" asp-for="Package.Carrier" placeholder="USPS, FedEx, etc.">
-        <span asp-validation-for="Package.Carrier" class="text-danger"></span>
+
+    <div class="form-control w-full">
+        <label asp-for="Package.Carrier" class="label">
+            <span class="label-text">Carrier</span>
+        </label>
+        <input asp-for="Package.Carrier" type="text" placeholder="USPS, FedEx, etc."
+               class="input input-bordered w-full" />
+        <span asp-validation-for="Package.Carrier" class="text-error text-sm"></span>
     </div>
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Notify</button>
+
+    <div class="form-control mt-4">
+        <button type="submit" class="btn btn-primary w-fit">Notify</button>
     </div>
 </form>
 

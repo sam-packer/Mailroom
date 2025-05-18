@@ -6,61 +6,82 @@
     ViewData["Meta"] = "Edit an existing user";
 }
 
-<h2>Edit User</h2>
-<hr/>
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="EditUser.UserId"/>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.First_Name" class="control-label"></label>
-                <input asp-for="EditUser.First_Name" class="form-control"/>
-                <span asp-validation-for="EditUser.First_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.Last_Name" class="control-label"></label>
-                <input asp-for="EditUser.Last_Name" class="form-control"/>
-                <span asp-validation-for="EditUser.Last_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.Email" class="control-label"></label>
-                <input asp-for="EditUser.Email" class="form-control"/>
-                <span asp-validation-for="EditUser.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.Password" class="control-label"></label>
-                <input asp-for="EditUser.Password" type="password" class="form-control"
-                       placeholder="Leave blank to keep password unchanged"/>
-                <span asp-validation-for="EditUser.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.Building" class="control-label"></label>
-                <input asp-for="EditUser.Building" class="form-control"/>
-                <span asp-validation-for="EditUser.Building" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.Unit" class="control-label"></label>
-                <input asp-for="EditUser.Unit" class="form-control"/>
-                <span asp-validation-for="EditUser.Unit" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="EditUser.Role" class="control-label"></label>
-                <select asp-for="EditUser.Role" class="form-control">
-                    <option value="User">User</option>
-                    <option value="Admin">Admin</option>
-                </select>
-                <span asp-validation-for="EditUser.Role" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <input type="submit" value="Save" class="btn btn-primary"/>
-            </div>
-        </form>
-    </div>
-</div>
+<h2 class="text-2xl font-semibold">Edit User</h2>
+<div class="divider"></div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
+<form method="post" class="max-w-lg space-y-4">
+    <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+
+    <input type="hidden" asp-for="EditUser.UserId" />
+
+    <div class="form-control">
+        <label asp-for="EditUser.First_Name" class="label">
+            <span class="label-text">First Name</span>
+        </label>
+        <input asp-for="EditUser.First_Name" class="input input-bordered w-full" />
+        <span asp-validation-for="EditUser.First_Name" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="EditUser.Last_Name" class="label">
+            <span class="label-text">Last Name</span>
+        </label>
+        <input asp-for="EditUser.Last_Name" class="input input-bordered w-full" />
+        <span asp-validation-for="EditUser.Last_Name" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="EditUser.Email" class="label">
+            <span class="label-text">Email</span>
+        </label>
+        <input asp-for="EditUser.Email" class="input input-bordered w-full" />
+        <span asp-validation-for="EditUser.Email" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="EditUser.Password" class="label">
+            <span class="label-text">Password</span>
+        </label>
+        <input asp-for="EditUser.Password" type="password"
+               class="input input-bordered w-full"
+               placeholder="Leave blank to keep password unchanged" />
+        <span asp-validation-for="EditUser.Password" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="EditUser.Building" class="label">
+            <span class="label-text">Building</span>
+        </label>
+        <input asp-for="EditUser.Building" class="input input-bordered w-full" />
+        <span asp-validation-for="EditUser.Building" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="EditUser.Unit" class="label">
+            <span class="label-text">Unit</span>
+        </label>
+        <input asp-for="EditUser.Unit" class="input input-bordered w-full" />
+        <span asp-validation-for="EditUser.Unit" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="EditUser.Role" class="label">
+            <span class="label-text">Role</span>
+        </label>
+        <select asp-for="EditUser.Role" class="select select-bordered w-full">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+        </select>
+        <span asp-validation-for="EditUser.Role" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control pt-2">
+        <button type="submit" class="btn btn-primary w-fit">Save</button>
+    </div>
+</form>
+
+<div class="mt-4">
+    <a asp-page="./Index" class="link link-secondary">← Back to List</a>
 </div>
 
 @section Scripts {

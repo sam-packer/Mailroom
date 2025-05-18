@@ -5,33 +5,48 @@
     ViewData["Meta"] = "Initialize a new user when there are none in the database";
 }
 
-<div class="login-form bg-body-tertiary">
-    <h2 class="text-center">Create Initial User</h2>
-    <p>No users are detected on the system. You have been redirected here to create the first user.</p>
-    <form method="post">
-        <div class="form-group">
-            <label asp-for="FirstName">First Name</label>
-            <input asp-for="FirstName" class="form-control"/>
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="LastName">Last Name</label>
-            <input asp-for="LastName" class="form-control"/>
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email">Email</label>
-            <input asp-for="Email" class="form-control"/>
-            <span asp-validation-for="Email" class="text-danger"></span>
+<div class="max-w-md mx-auto mt-16 p-6 bg-base-200 rounded-2xl shadow-md">
+    <h2 class="text-xl font-semibold text-center mb-2">Create Initial User</h2>
+    <p class="text-center mb-6 text-sm">
+        No users are detected on the system. You have been redirected here to create the first user.
+    </p>
+
+    <form method="post" class="space-y-4">
+        <div class="form-control">
+            <label asp-for="FirstName" class="label">
+                <span class="label-text">First Name</span>
+            </label>
+            <input asp-for="FirstName" class="input input-bordered w-full" />
+            <span asp-validation-for="FirstName" class="text-error text-sm"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Password">Password</label>
-            <input asp-for="Password" type="password" class="form-control"/>
-            <span asp-validation-for="Password" class="text-danger"></span>
+        <div class="form-control">
+            <label asp-for="LastName" class="label">
+                <span class="label-text">Last Name</span>
+            </label>
+            <input asp-for="LastName" class="input input-bordered w-full" />
+            <span asp-validation-for="LastName" class="text-error text-sm"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Create</button>
+        <div class="form-control">
+            <label asp-for="Email" class="label">
+                <span class="label-text">Email</span>
+            </label>
+            <input asp-for="Email" class="input input-bordered w-full" />
+            <span asp-validation-for="Email" class="text-error text-sm"></span>
+        </div>
+
+        <div class="form-control">
+            <label asp-for="Password" class="label">
+                <span class="label-text">Password</span>
+            </label>
+            <input asp-for="Password" type="password" class="input input-bordered w-full" />
+            <span asp-validation-for="Password" class="text-error text-sm"></span>
+        </div>
+
+        <div class="form-control pt-2">
+            <button type="submit" class="btn btn-primary w-full">Create</button>
+        </div>
     </form>
 </div>
 

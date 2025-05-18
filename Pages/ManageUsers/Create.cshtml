@@ -6,60 +6,78 @@
     ViewData["Meta"] = "Create a new user";
 }
 
-<h2>Create User</h2>
-<hr/>
+<h2 class="text-2xl font-semibold">Create User</h2>
+<div class="divider"></div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-2">
-                <label asp-for="User.First_Name" class="control-label"></label>
-                <input asp-for="User.First_Name" class="form-control"/>
-                <span asp-validation-for="User.First_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="User.Last_Name" class="control-label"></label>
-                <input asp-for="User.Last_Name" class="form-control"/>
-                <span asp-validation-for="User.Last_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="User.Email" class="control-label"></label>
-                <input asp-for="User.Email" class="form-control"/>
-                <span asp-validation-for="User.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="User.Password" class="control-label"></label>
-                <input asp-for="User.Password" type="password" class="form-control"/>
-                <span asp-validation-for="User.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="User.Building" class="control-label"></label>
-                <input asp-for="User.Building" class="form-control"/>
-                <span asp-validation-for="User.Building" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="User.Unit" class="control-label"></label>
-                <input asp-for="User.Unit" class="form-control"/>
-                <span asp-validation-for="User.Unit" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="User.Role" class="control-label"></label>
-                <select asp-for="User.Role" class="form-control">
-                    <option value="User">User</option>
-                    <option value="Admin">Admin</option>
-                </select>
-                <span asp-validation-for="User.Role" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <input type="submit" value="Create" class="btn btn-primary"/>
-            </div>
-        </form>
+<form method="post" class="max-w-lg space-y-4">
+    <div asp-validation-summary="ModelOnly" class="text-error text-sm"></div>
+
+    <div class="form-control">
+        <label asp-for="User.First_Name" class="label">
+            <span class="label-text">First Name</span>
+        </label>
+        <input asp-for="User.First_Name" class="input input-bordered w-full" />
+        <span asp-validation-for="User.First_Name" class="text-error text-sm"></span>
     </div>
-</div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
+    <div class="form-control">
+        <label asp-for="User.Last_Name" class="label">
+            <span class="label-text">Last Name</span>
+        </label>
+        <input asp-for="User.Last_Name" class="input input-bordered w-full" />
+        <span asp-validation-for="User.Last_Name" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="User.Email" class="label">
+            <span class="label-text">Email</span>
+        </label>
+        <input asp-for="User.Email" class="input input-bordered w-full" />
+        <span asp-validation-for="User.Email" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="User.Password" class="label">
+            <span class="label-text">Password</span>
+        </label>
+        <input asp-for="User.Password" type="password" class="input input-bordered w-full" />
+        <span asp-validation-for="User.Password" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="User.Building" class="label">
+            <span class="label-text">Building</span>
+        </label>
+        <input asp-for="User.Building" class="input input-bordered w-full" />
+        <span asp-validation-for="User.Building" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="User.Unit" class="label">
+            <span class="label-text">Unit</span>
+        </label>
+        <input asp-for="User.Unit" class="input input-bordered w-full" />
+        <span asp-validation-for="User.Unit" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control">
+        <label asp-for="User.Role" class="label">
+            <span class="label-text">Role</span>
+        </label>
+        <select asp-for="User.Role" class="select select-bordered w-full">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+        </select>
+        <span asp-validation-for="User.Role" class="text-error text-sm"></span>
+    </div>
+
+    <div class="form-control pt-2">
+        <button type="submit" class="btn btn-primary w-fit">Create</button>
+    </div>
+</form>
+
+<div class="mt-4">
+    <a asp-page="Index" class="link link-primary">← Back to List</a>
 </div>
 
 @section Scripts {

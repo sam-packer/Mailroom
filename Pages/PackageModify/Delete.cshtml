@@ -8,47 +8,38 @@
     ViewData["Meta"] = "Remove a package from the system";
 }
 
-<h2>Delete package?</h2>
-<hr/>
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Packages.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Packages.User.UserId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Packages.Carrier)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Packages.Carrier)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Packages.DeliveredDate)
-        </dt>
-        <dd class="col-sm-10">
-            @TimeZoneUtil.ConvertToUserTime(Model.Packages.DeliveredDate, CurrentUserService.Timezone).ToString("g")
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Packages.PickedUpDate)
-        </dt>
-        <dd class="col-sm-10">
+<h2 class="text-2xl font-semibold text-error">Delete Package?</h2>
+<div class="divider"></div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 mb-6">
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.FullName):</span>
+        <div>@Html.DisplayFor(m => m.FullName)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.Packages.Carrier):</span>
+        <div>@Html.DisplayFor(m => m.Packages.Carrier)</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.Packages.DeliveredDate):</span>
+        <div>@TimeZoneUtil.ConvertToUserTime(Model.Packages.DeliveredDate, CurrentUserService.Timezone).ToString("g")</div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.Packages.PickedUpDate):</span>
+        <div>
             @(Model.Packages.PickedUpDate == DateTime.MinValue
                 ? "Not Picked Up"
                 : TimeZoneUtil.ConvertToUserTime(Model.Packages.PickedUpDate, CurrentUserService.Timezone).ToString("g"))
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Packages.Delivered)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Packages.Delivered)
-        </dd>
-    </dl>
-
-    <form method="post">
-        <input type="hidden" asp-for="Packages.PackageId"/>
-        <input type="submit" value="Delete" class="btn btn-danger"/> |
-        <a asp-page="../Index">Back to List</a>
-    </form>
+        </div>
+    </div>
+    <div>
+        <span class="font-semibold">@Html.DisplayNameFor(m => m.Packages.Delivered):</span>
+        <div>@Html.DisplayFor(m => m.Packages.Delivered)</div>
+    </div>
 </div>
+
+<form method="post" class="flex items-center gap-4">
+    <input type="hidden" asp-for="Packages.PackageId" />
+    <button type="submit" class="btn btn-error">Delete</button>
+    <a asp-page="../Index" class="link link-secondary">Back to List</a>
+</form>

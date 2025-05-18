@@ -1,0 +1,32 @@
+{
+  "name": "mailroom-dotnet",
+  "version": "1.0.0",
+  "description": "Built with .NET 9.0. Feature complete with user management, package management, MySQL, and authentication.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css:build": "npx tailwindcss -i wwwroot/css/site.css -o wwwroot/css/styles.css --minify",
+    "css:watch": "npx tailwindcss -i wwwroot/css/site.css -o wwwroot/css/styles.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Telesphoreo/Mailroom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Telesphoreo/Mailroom/issues"
+  },
+  "homepage": "https://github.com/Telesphoreo/Mailroom#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "daisyui": "^5.0.35",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.7"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.7"
+  }
+}

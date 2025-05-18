@@ -6,38 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="@ViewData["Meta"]"/>
     <title>@ViewData["Title"] - Mailroom</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <script src="~/js/site.js" asp-append-version="true"></script>
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="flex flex-col min-h-screen bg-base-100 text-base-content">
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-body-tertiary border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">Mailroom</a>
+    <div class="navbar bg-base-200 shadow-sm">
+        <div class="navbar-start">
+            <!-- Mobile menu button -->
+            <div class="dropdown lg:hidden">
+                <div tabindex="0" role="button" class="btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h8m-8 6h16"/>
+                    </svg>
+                </div>
+                <!-- Mobile navbar links -->
+                @await Component.InvokeAsync("MobileNavbar")
+            </div>
+
+            <!-- Brand -->
+            <a asp-area="" asp-page="/Index" class="btn btn-ghost text-xl">Mailroom</a>
+
+            <!-- Desktop navbar links -->
             @await Component.InvokeAsync("Navbar")
         </div>
-    </nav>
+    </div>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
+
+<div class="container mx-auto px-4 py-6 flex-grow">
+    <main role="main">
         @RenderBody()
     </main>
 </div>
 
-<footer class="border-top footer text-muted mt-auto">
-    <div class="container">
-        &copy; 2025 Mailroom - <a asp-area="" asp-page="/License">License</a>
+<footer class="footer items-center justify-between p-4 bg-base-200 text-base-content mt-auto">
+    <div class="container mx-auto flex justify-between items-center">
+        <span>&copy; 2025 Mailroom Management System – 
+            <a asp-area="" asp-page="/License" class="text-blue-600 hover:underline hover:text-blue-800">
+                License
+            </a>
+        </span>
     </div>
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     (function () {
         const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const storedTz = localStorage.getItem("user_timezone");
+        const storedTz = sessionStorage.getItem("user_timezone");
 
         if (currentTz && currentTz !== storedTz) {
             fetch("/api/timezone", {
@@ -46,7 +66,7 @@
                 body: JSON.stringify({timezone: currentTz})
             }).then(res => {
                 if (res.ok) {
-                    localStorage.setItem("user_timezone", currentTz);
+                    sessionStorage.setItem("user_timezone", currentTz);
                 }
             }).catch(err => {
                 console.warn("Timezone update failed", err);

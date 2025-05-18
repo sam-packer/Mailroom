@@ -2,14 +2,15 @@
 
 @if (!string.IsNullOrEmpty(Model))
 {
-    <ul class="menu menu-horizontal px-1 hidden lg:flex">
+    <ul tabindex="0"
+        class="menu menu-md space-y-2 dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow">
         @if (Model == "Admin")
         {
             <li><a asp-page="/Index">Home</a></li>
             <li>
                 <details>
                     <summary>Packages</summary>
-                    <ul class="p-2 min-w-max bg-base-200 rounded-box z-10">
+                    <ul class="p-2">
                         <li><a asp-page="/PackageDelivery">Package Delivery</a></li>
                         <li><a asp-page="/UnknownPackageDelivery">Unknown Package</a></li>
                     </ul>
@@ -18,7 +19,7 @@
             <li>
                 <details>
                     <summary>Users</summary>
-                    <ul class="p-2 min-w-max bg-base-200 rounded-box z-10">
+                    <ul class="p-2">
                         <li><a asp-page="/ManageUsers/Index">List</a></li>
                         <li><a asp-page="/ManageUsers/Create">Create</a></li>
                     </ul>
@@ -28,19 +29,3 @@
         <li><a asp-page="/Logout">Logout</a></li>
     </ul>
 }
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const allDetails = document.querySelectorAll(".menu details");
-
-        allDetails.forEach((targetDetail) => {
-            targetDetail.addEventListener("toggle", () => {
-                if (targetDetail.open) {
-                    allDetails.forEach((detail) => {
-                        if (detail !== targetDetail) detail.removeAttribute("open");
-                    });
-                }
-            });
-        });
-    });
-</script>
