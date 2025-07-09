@@ -1,6 +1,6 @@
 ﻿# Mailroom Management System
 
-Built with .NET 9.0. Feature complete with user management, package management, MySQL, and authentication.
+Built with .NET 9.0. Feature complete with user management, package management, PostgresSQL, and authentication.
 
 ## Live demo
 If you don't want to set up the project, you can view a live demo of this project at
@@ -24,7 +24,7 @@ dotnet user-secrets init
 dotnet user-secrets set "Jwt:Key" "generate at https://jwtsecret.com/generate"
 dotnet user-secrets set "Jwt:Issuer" "your.domain.com"
 dotnet user-secrets set "Jwt:Audience" "your.domain.com"
-dotnet user-secrets set "ConnectionStrings:MailroomDB" "server=<ip>;user=<username>;password=<password>;database=<database>"
+dotnet user-secrets set "ConnectionStrings:MailroomDB" "Host=<ip>;Port=5432;Username=<username>;Password=<password>;Database=<database>"
 dotnet user-secrets set "Mail:From" "no-reply@mailroom.example.com"
 dotnet user-secrets set "Mail:Server" "smtp.example.com"
 dotnet user-secrets set "Mail:Port" "587"

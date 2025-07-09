@@ -22,7 +22,7 @@ namespace Mailroom.Pages.ManageUsers
 
         public async Task OnGetAsync()
         {
-            User = await _context.Users.ToListAsync();
+            User = await _context.Users.OrderBy(u => u.UserId).ToListAsync();
             if (!string.IsNullOrEmpty(Search))
             {
                 var SearchResults = User.Where(s =>

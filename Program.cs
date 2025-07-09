@@ -2,6 +2,7 @@ using Mailroom;
 using Mailroom.Pages.Mail;
 using Mailroom.Utils;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +11,35 @@ builder.Configuration.AddUserSecrets<Program>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<MailroomDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("MailroomDB"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MailroomDB"))));
+builder.Services.AddDbContextPool<MailroomDbContext>((provider, options) =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+    var interceptor = provider.GetRequiredService<DynamicLeaderRecoveryInterceptor>();
+
+    var connStr = config.GetConnectionString("MailroomDB");
+    if (!string.IsNullOrWhiteSpace(connStr))
+    {
+        options.UseNpgsql(connStr);
+    }
+    else
+    {
+        var dbPass = config["db_password"];
+        var dbUser = config["db_user"] ?? "postgres";
+        var dbName = config["db_name"] ?? "mailroom";
+
+        var connectionString = new NpgsqlConnectionStringBuilder
+        {
+            Host = "pg-leader.internal", // the leader is determined by the servers using scripts and internal DNS
+            Port = 5432,
+            Username = dbUser,
+            Password = dbPass,
+            Database = dbName,
+            Pooling = true
+        }.ConnectionString;
+
+        options.UseNpgsql(connectionString).AddInterceptors(interceptor);
+    }
+});
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
@@ -35,6 +61,7 @@ builder.Services.AddHostedService<QueuedHostedService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 
 var app = builder.Build();
 
